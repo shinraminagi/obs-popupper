@@ -67,33 +67,38 @@
             dropzone.style.backgroundColor = '';
 
             const file = e.dataTransfer.files[0];
-            if (file && file.type.startsWith('image/')) { // 画像ファイルかどうかを確認
-                const reader = new FileReader();
-                dropzone.innerHTML = loadingContent;
-                reader.onload = async function (event) {
-                    try {
-                        // POSTリクエストを送信
-                        const res = await fetch('/send', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'text/plain'
-                            },
-                            body: event.target.result
-                        });
-                        if (!res.ok) {
-                            throw new Error(`${res.status} ${res.statusText}`);
-                        }
-                        dropzone.innerHTML = "Done!"
-                        setTimeout(() => {
-                            dropzone.innerHTML = defaultContent;
-                        }, 2000);
-                    } catch (error) {
-                        dropzone.innerHTML = `<span style="color:red">ERROR: ${res.status} ${res.statusText}</span>`;
-                        console.error('ERROR:', error);
-                    }
-                }
-                reader.readAsDataURL(file); // DataURLとしてファイルを読み込む
+            if (!(file && file.type.startsWith('image/'))) {
+                dropzone.innerHTML = '<span style="color: red; font-weight: bold; ">Not an image!</span>';
+                setTimeout(() => {
+                    dropzone.innerHTML = defaultContent;
+                }, 2000);
+                return;
             }
+            const reader = new FileReader();
+            dropzone.innerHTML = loadingContent;
+            reader.onload = async function (event) {
+                try {
+                    // POSTリクエストを送信
+                    const res = await fetch('/send', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'text/plain'
+                        },
+                        body: event.target.result
+                    });
+                    if (!res.ok) {
+                        throw new Error(`${res.status} ${res.statusText}`);
+                    }
+                    dropzone.innerHTML = "Done!"
+                    setTimeout(() => {
+                        dropzone.innerHTML = defaultContent;
+                    }, 2000);
+                } catch (error) {
+                    dropzone.innerHTML = `<span style="color:red">ERROR: ${res.status} ${res.statusText}</span>`;
+                    console.error('ERROR:', error);
+                }
+            }
+            reader.readAsDataURL(file); // DataURLとしてファイルを読み込む
         });
     </script>
 </body>
