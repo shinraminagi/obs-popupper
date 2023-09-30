@@ -27,7 +27,9 @@
     <div class="center-flex">
         <img id="image" />
     </div>
+
     <script>
+        const popSound = new Audio('/pop.mp3');
         const image = document.getElementById('image');
 
         function connect() {
@@ -39,6 +41,7 @@
 
             ws.onmessage = function (event) {
                 image.src = event.data;
+                popSound.play();
             };
 
             ws.onclose = function () {

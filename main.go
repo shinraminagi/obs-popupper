@@ -17,6 +17,9 @@ var indexHTML []byte
 //go:embed popper.html
 var popperHTML []byte
 
+//go:embed pop.mp3
+var popSound []byte
+
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
 		return true
@@ -82,6 +85,10 @@ func main() {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		w.Write(indexHTML)
+	})
+	mux.HandleFunc("/pop.mp3", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "audio/mpeg")
+		w.Write(popSound)
 	})
 	http.Handle("/", mux)
 	log.Printf("Server started on :%s\n", port)
