@@ -14,6 +14,9 @@ import (
 //go:embed index.html
 var indexHTML []byte
 
+//go:embed popper.html
+var popperHTML []byte
+
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
 		return true
@@ -72,6 +75,10 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/recv", handleRecv)
 	mux.HandleFunc("/send", handleSend)
+	mux.HandleFunc("/popup", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html")
+		w.Write(popperHTML)
+	})
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		w.Write(indexHTML)

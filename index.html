@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSocket Test</title>
+    <title>OBS PopUpper</title>
     <style type="text/css">
         body,
         html {
@@ -16,14 +16,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        #previewImage {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            max-width: 100%;
-            margin: 20px;
         }
 
         #dropzone {
@@ -53,17 +45,12 @@
 </head>
 
 <body>
-    <div class="center-flex">
-        <img id="previewImage" />
-    </div>
     <div id="dropzone" class="center-flex"></div>
     <script>
         const defaultContent = 'Drop an image here!';
         const loadingContent = '<div class="loader"></div>';
 
         const dropzone = document.getElementById('dropzone');
-        const previewImage = document.getElementById('previewImage');
-
         dropzone.innerHTML = defaultContent;
 
         dropzone.addEventListener('dragover', (e) => {
@@ -84,7 +71,6 @@
                 const reader = new FileReader();
                 dropzone.innerHTML = loadingContent;
                 reader.onload = async function (event) {
-                    previewImage.src = event.target.result;
                     try {
                         // POSTリクエストを送信
                         const res = await fetch('/send', {

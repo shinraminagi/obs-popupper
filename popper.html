@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popper</title>
+    <style type="text/css">
+        body,
+        .center-flex {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+            margin: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center-flex">
+        <img id="image" />
+    </div>
+    <script>
+        const image = document.getElementById('image');
+
+        function connect() {
+            const ws = new WebSocket(`ws://${location.host}/recv`);
+
+            ws.onopen = function () {
+                console.log('Connected!');
+            };
+
+            ws.onmessage = function (event) {
+                image.src = event.data;
+            };
+
+            ws.onclose = function () {
+                ws.close();
+                console.log('Closed. Then, try reconnect.');
+                connect();
+            };
+        }
+
+        connect();
+    </script>
+</body>
+
+</html>
