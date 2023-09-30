@@ -83,12 +83,28 @@
             if (file && file.type.startsWith('image/')) { // 画像ファイルかどうかを確認
                 const reader = new FileReader();
                 dropzone.innerHTML = loadingContent;
-                reader.onload = function (event) {
+                reader.onload = async function (event) {
                     previewImage.src = event.target.result;
-                    dropzone.innerHTML = "Done!"
-                    setTimeout(() => {
-                        dropzone.innerHTML = defaultContent;
-                    }, 2000);
+                    try {
+                        // POSTリクエストを送信
+                        const res = await fetch('/send', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'text/plain'
+                            },
+                            body: event.target.result
+                        });
+                        if (!res.ok) {
+                            throw new Error(`${res.status} ${res.statusText}`);
+                        }
+                        dropzone.innerHTML = "Done!"
+                        setTimeout(() => {
+                            dropzone.innerHTML = defaultContent;
+                        }, 2000);
+                    } catch (error) {
+                        dropzone.innerHTML = `<span style="color:red">ERROR: ${res.status} ${res.statusText}</span>`;
+                        console.error('ERROR:', error);
+                    }
                 }
                 reader.readAsDataURL(file); // DataURLとしてファイルを読み込む
             }
