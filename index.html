@@ -30,6 +30,25 @@
             width: 100%;
             height: 100%;
         }
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -37,10 +56,15 @@
     <div class="center-flex">
         <img id="previewImage" />
     </div>
-    <div id="dropzone" class="center-flex">Drop an image here!</div>
+    <div id="dropzone" class="center-flex"></div>
     <script>
+        const defaultContent = 'Drop an image here!';
+        const loadingContent = '<div class="loader"></div>';
+
         const dropzone = document.getElementById('dropzone');
         const previewImage = document.getElementById('previewImage');
+
+        dropzone.innerHTML = defaultContent;
 
         dropzone.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -58,11 +82,14 @@
             const file = e.dataTransfer.files[0];
             if (file && file.type.startsWith('image/')) { // 画像ファイルかどうかを確認
                 const reader = new FileReader();
-
+                dropzone.innerHTML = loadingContent;
                 reader.onload = function (event) {
                     previewImage.src = event.target.result;
+                    dropzone.innerHTML = "Done!"
+                    setTimeout(() => {
+                        dropzone.innerHTML = defaultContent;
+                    }, 2000);
                 }
-
                 reader.readAsDataURL(file); // DataURLとしてファイルを読み込む
             }
         });
