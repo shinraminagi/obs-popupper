@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+    <style type="text/css">
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .center-flex {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #previewImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+            margin: 20px;
+        }
+
+        #dropzone {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center-flex">
+        <img id="previewImage" />
+    </div>
+    <div id="dropzone" class="center-flex">Drop an image here!</div>
+    <script>
+        const dropzone = document.getElementById('dropzone');
+        const previewImage = document.getElementById('previewImage');
+
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.style.backgroundColor = '#eaeaea';
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.style.backgroundColor = '';
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.style.backgroundColor = '';
+
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) { // 画像ファイルかどうかを確認
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    previewImage.src = event.target.result;
+                }
+
+                reader.readAsDataURL(file); // DataURLとしてファイルを読み込む
+            }
+        });
+    </script>
+</body>
+
+</html>
