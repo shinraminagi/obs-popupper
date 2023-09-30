@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/dustin/go-broadcast"
 	"github.com/gorilla/websocket"
 )
 
@@ -26,7 +27,7 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-var imgChan = make(chan []byte, 10)
+var imgBroadcast = broadcast.NewBroadcaster(10)
 
 func handleRecv(w http.ResponseWriter, r *http.Request) {
 	// HTTP接続をWebSocketにアップグレード
@@ -39,8 +40,11 @@ func handleRecv(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("Client Connected")
 
-	for {
-		img := <-imgChan
+	ch := make(chan interface{})
+	imgBroadcast.Register(ch)
+	defer imgBroadcast.Unregister(ch)
+	for v := range ch {
+		img := v.([]byte)
 		if err := conn.WriteMessage(websocket.TextMessage, img); err != nil {
 			log.Println(err)
 			return
@@ -63,7 +67,7 @@ func handleSend(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not an image", http.StatusForbidden)
 		return
 	}
-	imgChan <- img
+	imgBroadcast.Submit(img)
 	log.Println("Image received")
 	w.WriteHeader(http.StatusOK)
 	w.Write(([]byte)("OK"))

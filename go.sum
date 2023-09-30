@@ -1,2 +1,4 @@
+github.com/dustin/go-broadcast v0.0.0-20211018055107-71439988bd91 h1:jAUM3D1KIrJmwx60DKB+a/qqM69yHnu6otDGVa2t0vs=
+github.com/dustin/go-broadcast v0.0.0-20211018055107-71439988bd91/go.mod h1:8rK6Kbo1Jd6sK22b24aPVgAm3jlNy1q1ft+lBALdIqA=
 github.com/gorilla/websocket v1.5.0 h1:PPwGk2jz7EePpoHN/+ClbZu8SPxiqlu12wZP/3sWmnc=
 github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
