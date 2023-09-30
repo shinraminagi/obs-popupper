@@ -9,28 +9,43 @@
         body,
         .center-flex {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        #image {
+        img {
             display: flex;
             justify-content: center;
             align-items: center;
             max-width: 100%;
+            max-height: 100%;
             margin: 20px;
+            opacity: 1;
+            transition:
+                opacity 2s ease-in-out,
+                max-height 2s ease-in-out,
+                max-width 2s ease-in-out,
+                margin 2s ease-in-out;
+        }
+
+        img.fade-out {
+            opacity: 0;
+            max-width: 0;
+            max-height: 0;
+            margin: 0;
         }
     </style>
 </head>
 
 <body>
-    <div class="center-flex">
-        <img id="image" />
-    </div>
+    <div id="pop-area" class="center-flex"></div>
 
     <script>
+        const DISPLAY_DURETION = 5000;
+
         const popSound = new Audio('/pop.mp3');
-        const image = document.getElementById('image');
+        const popArea = document.getElementById('pop-area');
 
         function connect() {
             const ws = new WebSocket(`ws://${location.host}/recv`);
@@ -40,8 +55,16 @@
             };
 
             ws.onmessage = function (event) {
+                const image = document.createElement('img');
                 image.src = event.data;
+                popArea.appendChild(image);
                 popSound.play();
+                setTimeout(() => {
+                    image.classList.add('fade-out');
+                    setTimeout(() => {
+                        image.remove();
+                    }, 2000);
+                }, DISPLAY_DURETION);
             };
 
             ws.onclose = function () {
