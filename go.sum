@@ -1,4 +1,4 @@
-github.com/dustin/go-broadcast v0.0.0-20211018055107-71439988bd91 h1:jAUM3D1KIrJmwx60DKB+a/qqM69yHnu6otDGVa2t0vs=
-github.com/dustin/go-broadcast v0.0.0-20211018055107-71439988bd91/go.mod h1:8rK6Kbo1Jd6sK22b24aPVgAm3jlNy1q1ft+lBALdIqA=
+github.com/Maki-Daisuke/go-broadcast-channel v0.0.0-20231005073138-fda023444abd h1:cFlDP6zCxQ1s1w9Ia5qi+L02T2mWeazso6vzKisNZW4=
+github.com/Maki-Daisuke/go-broadcast-channel v0.0.0-20231005073138-fda023444abd/go.mod h1:zB3Y6ws2W8AI4p8MoIRNoAEgsJGiVNWuJxrmqeYOpw8=
 github.com/gorilla/websocket v1.5.0 h1:PPwGk2jz7EePpoHN/+ClbZu8SPxiqlu12wZP/3sWmnc=
 github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
