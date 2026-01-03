@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Popper</title>
     <style type="text/css">
-        body,
-        .center-flex {
+        #pop-area {
             display: flex;
+            height: 100vh;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -57,16 +57,21 @@
             };
 
             ws.onmessage = function (event) {
-                const image = document.createElement('img');
-                image.src = event.data;
-                popArea.appendChild(image);
-                popSound.play();
-                setTimeout(() => {
-                    image.classList.add('fade-out');
+                if (event.data.startsWith('data:audio/')) {
+                    const audio = new Audio(event.data);
+                    audio.play();
+                } else if (event.data.startsWith('data:image/')) {
+                    const image = document.createElement('img');
+                    image.src = event.data;
+                    popArea.appendChild(image);
+                    popSound.play();
                     setTimeout(() => {
-                        image.remove();
-                    }, 2000);
-                }, DISPLAY_DURATION);
+                        image.classList.add('fade-out');
+                        setTimeout(() => {
+                            image.remove();
+                        }, 2000);
+                    }, DISPLAY_DURATION);
+                }
             };
 
             ws.onclose = function () {

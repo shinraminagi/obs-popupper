@@ -47,7 +47,7 @@
 <body>
     <div id="dropzone" class="center-flex"></div>
     <script>
-        const defaultContent = 'Drop an image here!';
+        const defaultContent = 'Drop an image or audio here!';
         const loadingContent = '<div class="loader"></div>';
 
         const dropzone = document.getElementById('dropzone');
@@ -67,8 +67,8 @@
             dropzone.style.backgroundColor = '';
 
             const file = e.dataTransfer.files[0];
-            if (!(file && file.type.startsWith('image/'))) {
-                dropzone.innerHTML = '<span style="color: red; font-weight: bold; ">Not an image!</span>';
+            if (!(file && (file.type.startsWith('image/') || file.type.startsWith('audio/')))) {
+                dropzone.innerHTML = '<span style="color: red; font-weight: bold; ">Not an image or audio!</span>';
                 setTimeout(() => {
                     dropzone.innerHTML = defaultContent;
                 }, 2000);

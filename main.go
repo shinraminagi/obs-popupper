@@ -62,13 +62,13 @@ func handleSend(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-	if string(img[0:11]) != "data:image/" {
-		log.Printf("Not an image: %s\n", string(img))
-		http.Error(w, "Not an image", http.StatusForbidden)
+	if string(img[0:11]) != "data:image/" && string(img[0:11]) != "data:audio/" {
+		log.Printf("Not an image or audio: %s\n", string(img))
+		http.Error(w, "Not an image or audio", http.StatusForbidden)
 		return
 	}
 	imgBroadcast.Chan() <- img
-	log.Println("Image received")
+	log.Println("Data received")
 	w.WriteHeader(http.StatusOK)
 	w.Write(([]byte)("OK"))
 }
