@@ -9,6 +9,7 @@ OBS PopUpper is a simple tool designed to display images or play audio on an OBS
 - **Audio Support**: Plays audio files immediately upon drop.
 - **Real-time Updates**: Uses WebSockets to instantly push content to the overlay.
 - **OBS Integration**: Designed to be used as a Browser Source in OBS Studio.
+- **Single Binary**: A standalone executable that is easy to run without complex dependencies.
 
 ## Installation
 
